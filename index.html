@@ -126,15 +126,16 @@ nav.scrolled .nav-cta:hover {
   background:var(--vd); border-color:var(--vd); color:var(--w);
   box-shadow:0 6px 20px var(--v20);
 }
-@media (max-width:768px) { .nav-links { display:none; } }
+/* El menú desktop pasa a mobile en 960px */
 
 /* ── HERO ── */
 .hero {
   min-height:100svh;
-  background: #6B4DD9;
+  background:#6B4DD9;
   display:flex; flex-direction:column;
   align-items:center; justify-content:center;
-  color:var(--w); padding:100px 6% 100px;
+  color:var(--w);
+  padding:88px 5% 72px;
   position:relative; overflow:hidden;
 }
 
@@ -237,18 +238,23 @@ nav.scrolled .nav-cta:hover {
   transform:rotate(18deg);
 }
 .hero-inner {
-  max-width:860px; width:100%;
-  display:grid; grid-template-columns:auto 1fr;
-  gap:0 100px; align-items:start;
+  max-width:1120px; width:100%;
+  display:grid;
+  grid-template-columns:minmax(430px, 1.05fr) minmax(360px, .95fr);
+  gap:72px;
+  align-items:center;
   position:relative; z-index:2;
 }
 /* Logo columna izquierda */
 .hero-logo-col {
-  display:flex; flex-direction:column; align-items:center;
-  padding-top:70px;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  padding-top:0;
 }
 .hero-logo-col img {
-  height:350px; width:auto;
+  width:100%;
+  max-width:500px;
+  height:auto;
   animation:logoFloat 5s ease-in-out infinite;
   filter:drop-shadow(0 12px 32px rgba(0,0,0,.18));
 }
@@ -262,7 +268,10 @@ nav.scrolled .nav-cta:hover {
   background:linear-gradient(to bottom, rgba(255,255,255,.25), transparent);
 }
 /* Texto columna derecha */
-.hero-text-col { padding-top:4px; }
+.hero-text-col {
+  padding-top:0;
+  max-width:520px;
+}
 .hero-label {
   display:inline-flex; align-items:center; gap:10px;
   font-size:16px; font-weight:700; letter-spacing:4px;
@@ -381,31 +390,56 @@ nav.scrolled .nav-hamburger span { background:var(--ink); }
 }
 
 /* ── RESPONSIVE HERO ── */
-@media (max-width:860px) {
+@media (max-width:960px) {
   .hero { padding:88px 5% 80px; }
   .hero-inner {
+    max-width:760px;
     grid-template-columns:1fr;
-    gap:36px; text-align:center;
+    gap:36px;
+    text-align:center;
   }
   .hero-logo-col {
-    flex-direction:row; align-items:center;
-    justify-content:center; padding-top:0;
+    flex-direction:row;
+    align-items:center;
+    justify-content:center;
+    padding-top:0;
   }
-  .hero-logo-col img { height:150px; }
+  .hero-logo-col img {
+    width:min(88vw,460px);
+    max-width:460px;
+  }
   .hero-logo-divider { display:none; }
+  .hero-text-col {
+    max-width:680px;
+    margin:0 auto;
+  }
   .hero-label { justify-content:center; font-size:13px; }
   .hero-body, .hero-body-2 { font-size:1rem; }
   .hero-ctas { justify-content:center; }
 }
 
 @media (max-width:480px) {
-  .hero { padding:80px 5% 72px; min-height:100svh; }
-  .hero-logo-col img { height:130px; }
+  .hero {
+    padding:82px 5% 68px;
+    min-height:100svh;
+  }
+  .hero-inner { gap:28px; }
+  .hero-logo-col img {
+    width:min(88vw,340px);
+    max-width:340px;
+  }
   .hero-body { font-size:.92rem; }
-  .hero-body-2 { font-size:.88rem; }
-  .hero-ctas { flex-direction:column; align-items:center; width:100%; }
+  .hero-body-2 { font-size:.88rem; margin-bottom:32px; }
+  .hero-ctas {
+    flex-direction:column;
+    align-items:center;
+    width:100%;
+  }
   .hero-label { font-size:12px; letter-spacing:2px; }
-  .btn-neon, .btn-outline { width:100%; justify-content:center; }
+  .btn-neon, .btn-outline {
+    width:100%;
+    justify-content:center;
+  }
 }
 
 /* ── SECCIÓN BASE ── */
@@ -869,14 +903,16 @@ footer { background:var(--k); padding:72px 6% 36px; }
         <a href="mailto:proyectos@kigenmarketing.com.ar">proyectos@kigenmarketing.com.ar</a>
         <a href="https://www.linkedin.com/company/kigenmarketing/" target="_blank" rel="noopener">LinkedIn ↗</a>
       </div>
-  <div class="footer-bottom">
-  <p class="footer-copy">© 2026 KIGEN MARKETING ESTRATÉGICO</p>
-  <div style="display:inline-flex; align-items:center; gap:4px;">
-    <span class="footer-tagline">¿Cuál es tu </span>
-    <img src="KIGEN NEW LOGO 05.png" alt="Kigen" style="height:25px;">
-    <span class="footer-tagline">?</span>
+      <div class="footer-bottom">
+        <p class="footer-copy">© 2026 KIGEN MARKETING ESTRATÉGICO</p>
+        <div style="display:inline-flex; align-items:center; gap:4px;">
+          <span class="footer-tagline">¿Cuál es tu </span>
+          <img src="KIGEN NEW LOGO 05.png" alt="Kigen" style="height:25px;">
+          <span class="footer-tagline">?</span>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
 </footer>
 
 <script>
@@ -888,6 +924,9 @@ function syncLogos(scrolled){
     if (img.getAttribute('src') !== next) img.src = next;
   });
 }
+
+syncLogos(window.scrollY > 40);
+
 addEventListener('scroll', () => {
   const scrolled = scrollY > 40;
   nav.classList.toggle('scrolled', scrolled);
@@ -915,7 +954,9 @@ const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('on'); obs.unobserve(e.target); } });
 }, { threshold:.1, rootMargin:'0px 0px -36px 0px' });
 document.querySelectorAll('.r').forEach(el => obs.observe(el));
-setTimeout(() => document.querySelectorAll('.hero .r').forEach(el => el.classList.add('on')), 80);
+requestAnimationFrame(() => {
+  document.querySelectorAll('.hero .r').forEach(el => el.classList.add('on'));
+});
 </script>
 </body>
 </html>
